@@ -1,0 +1,6 @@
+/dist
+/node_modules
+/.env
+/src/Modules/*/proto
+/src/Modules/schema.gql
+/src/Modules/Api
