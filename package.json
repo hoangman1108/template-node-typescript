@@ -4,12 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon --exec ts-node src/index.ts",
+        "start": "node build/index.js",
         "build": "tsc",
-        "start": "node dist/index.js",
-        "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-        "lint-fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
-    },
+        "postinstall": "npm run build"
+      },
     "keywords": [],
     "author": "",
     "license": "ISC",
