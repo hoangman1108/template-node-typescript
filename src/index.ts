@@ -1,24 +1,34 @@
-import express from 'express';
-import http from 'http';
-import router from './routers/index';
-import logger from './Log';
-const app = express();
+import database from './db';
+import app from './app';
+import  config from './config/config';
+import logger from './config/logger';
+new database();
+const server = app.listen(config.port, () => {
+  logger.info(`Listening to port ${config.port}`);
+});
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
 
-app.use('/', router);
-var port = process.env.PORT || 3000;
-app.set('port', port);
+const unexpectedErrorHandler = (error: Error) => {
+  logger.error(error);
+  exitHandler();
+};
 
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
 
-var server = http.createServer(app);
-server.listen(3000);
-server.on('listening', onListening);
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received');
+  if (server) {
+    server.close();
+  }
+});
 
-
-function onListening() {
-  var addr:any = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-    console.log(addr);
-    console.log(bind);
-}
