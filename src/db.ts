@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import { connect, connection, Connection } from 'mongoose';
 import logger from './config/logger';
 import config from './config/config';
 
 class Database {
-  private connection: any;
+  private connection: Connection | undefined;
 
   public uri: string;
 
@@ -13,7 +13,7 @@ class Database {
   }
 
   public onConnection(): void {
-    this.connection = mongoose.connection;
+    this.connection = connection;
 
     this.connection.on('connected', () => {
       logger.info('Mongo Connection Established');
@@ -27,7 +27,7 @@ class Database {
       logger.info('Mongo Connection Disconnected');
       logger.info('Trying to reconnect to Mongo...');
       setTimeout(() => {
-        mongoose.connect(this.uri, {
+        connect(this.uri, {
           keepAlive: true,
           useNewUrlParser: true,
           useUnifiedTopology: true,
@@ -48,7 +48,7 @@ class Database {
     });
 
     const run = async () => {
-      await mongoose.connect(this.uri, {
+      await connect(this.uri, {
         keepAlive: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
