@@ -16,7 +16,7 @@ const jwtVerify = async (payload: any, done: any) => {
     // const user = await User.findById(payload.sub);
     const user = {
       name: 'hoang man',
-    }
+    };
     if (!user) {
       return done(null, false);
     }

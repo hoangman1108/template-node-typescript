@@ -7,7 +7,7 @@ import cors from 'cors';
 import passport from 'passport';
 
 import router from './routers/index';
-import logger from './Log';
+
 const app = express();
 
 // set security HTTP headers
@@ -37,7 +37,6 @@ app.use(passport.initialize());
 // if (config.env === 'production') {
 //   app.use('/v1/auth', authLimiter);
 // }
-
 
 app.use('/', router);
 

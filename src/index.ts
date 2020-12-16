@@ -1,8 +1,11 @@
 import database from './db';
 import app from './app';
-import  config from './config/config';
+import config from './config/config';
 import logger from './config/logger';
-new database();
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const data = new database();
+
 const server = app.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
 });
@@ -31,4 +34,3 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
-

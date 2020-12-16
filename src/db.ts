@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from './log';
+import logger from './config/logger';
 import config from './config/config';
 
 class Database {
@@ -9,7 +9,6 @@ class Database {
 
   constructor() {
     this.uri = config.mongoose.url;
-    console.log(this.uri)
     this.onConnection();
   }
 
