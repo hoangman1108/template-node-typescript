@@ -1,7 +1,7 @@
 FROM centos:8
 
 # Create app directory
-WORKDIR /usr/src/gateway-svc
+WORKDIR /usr/src/template-svc
 
 ADD . ./
 RUN dnf install -y gcc-c++ make
