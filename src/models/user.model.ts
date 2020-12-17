@@ -15,6 +15,7 @@ export interface IUserDocument extends Document {
   email: string;
   password: string;
   roles: string;
+  salt?: string;
   createdAt?: Date;
   updatedAt?: Date;
   isPasswordMatch: (password: string) => Promise<boolean>;
@@ -42,17 +43,16 @@ const userSchema = new Schema({
       }
     },
   },
-  password: {
+  salt: {
     type: String,
     required: true,
     trim: true,
     minlength: 8,
-    validate(value: string) {
-      if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-        throw new Error('Password must contain at least one letter and one number');
-      }
-    },
     private: true,
+  },
+  password: {
+    type: String,
+    required: true,
   },
   role: {
     type: String,
@@ -93,9 +93,9 @@ userSchema.methods.isPasswordMatch = async function (password: string): Promise<
 userSchema.pre('save', async function (next) {
   const user = this as IUserDocument;
   if (user.isModified('password')) {
-    const salt = bcrypt.genSalt();
-    console.log('salt', salt);
-    user.password = await bcrypt.hash(user.password, 12);
+    const salt = await bcrypt.genSalt();
+    user.salt = salt;
+    user.password = await bcrypt.hash(user.password, user.salt);
   }
   next();
 });

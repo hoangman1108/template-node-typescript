@@ -6,9 +6,9 @@ import TokenService from './token.service';
 import UserService from './user.service';
 
 export default class AuthService {
-  tokenService: TokenService;
+  private tokenService: TokenService;
 
-  userService: UserService;
+  private userService: UserService;
 
   constructor() {
     this.userService = new UserService();

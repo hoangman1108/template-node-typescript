@@ -3,11 +3,12 @@ import { IUserDocument, UserCollection } from '../models/user.model';
 import ApiError from '../utils/ApiError';
 
 export default class UserService {
-  createUser = async (userBody: IUserDocument) => {
+  createUser = async (userBody: IUserDocument): Promise<IUserDocument> => {
     if (await UserCollection.isEmailTaken(userBody.email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     }
-    const user = await UserCollection.create(userBody);
+    const user: IUserDocument | null = await UserCollection.create(userBody);
+    if (!user) throw new ApiError(422, 'User cannot be created');
     return user;
   };
 

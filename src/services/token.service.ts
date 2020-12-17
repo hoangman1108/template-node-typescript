@@ -7,15 +7,16 @@ import { tokenTypes } from '../config/tokens';
 import ApiError from '../utils/ApiError';
 import UserService from './user.service';
 import { IUserDocument } from '../models/user.model';
+import { IGenerateAuthTokens } from '../interfaces/auth.interface';
 
 export default class TokenService {
-  userService: UserService;
+  private userService: UserService;
 
   constructor() {
     this.userService = new UserService();
   }
 
-  generateToken = (userId: string, expires: moment.Moment, type: string, secret = config.jwt.secret) => {
+  generateToken = (userId: string, expires: moment.Moment, type: string, secret = config.jwt.secret): string => {
     const payload = {
       sub: userId,
       iat: moment().unix(),
@@ -48,7 +49,7 @@ export default class TokenService {
     return tokenDoc;
   };
 
-  generateAuthTokens = async (user: { id: string }) => {
+  generateAuthTokens = async (user: { id: string }): Promise<IGenerateAuthTokens> => {
     const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
     const accessToken = this.generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
@@ -68,13 +69,13 @@ export default class TokenService {
     };
   };
 
-  generateResetPasswordToken = async (email: any) => {
+  generateResetPasswordToken = async (email: any): Promise<string> => {
     const user: IUserDocument | null = await this.userService.getUserByEmail(email);
     if (!user) {
       throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
     }
     const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-    const resetPasswordToken = this.generateToken(user.id || '', expires, tokenTypes.RESET_PASSWORD);
+    const resetPasswordToken: string = this.generateToken(user.id || '', expires, tokenTypes.RESET_PASSWORD);
     await this.saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
     return resetPasswordToken;
   };
