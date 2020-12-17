@@ -42,4 +42,3 @@ export const resetPassword = {
     password: Joi.string().required().custom(password),
   }),
 };
-

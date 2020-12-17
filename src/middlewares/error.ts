@@ -14,6 +14,7 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
   next(error);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {

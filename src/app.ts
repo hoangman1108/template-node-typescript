@@ -9,7 +9,7 @@ import httpStatus from 'http-status';
 
 import router from './routers/index';
 import ApiError from './utils/ApiError';
-import {errorConverter, errorHandler } from './middlewares/error';
+import { errorConverter, errorHandler } from './middlewares/error';
 
 const app = express();
 
