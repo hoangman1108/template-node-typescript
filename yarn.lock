@@ -140,6 +140,13 @@
   dependencies:
     "@types/express" "*"
 
+"@types/express-rate-limit@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/express-rate-limit/-/express-rate-limit-5.1.0.tgz#c08e9b4957989fbe5ff8d5224f392359a264a597"
+  integrity sha512-vmg7S3hUnfFmp06V01DrTB41mbQYXMV/F4aF5KKnfCIeSlnizatXaqO9UgR6LvNEEd3eMpuUTLxR6nv3d4hZ6g==
+  dependencies:
+    "@types/express" "*"
+
 "@types/express-serve-static-core@*":
   version "4.17.17"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.17.tgz#6ba02465165b6c9c3d8db3a28def6b16fc9b70f5"
@@ -1406,6 +1413,11 @@ express-mongo-sanitize@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/express-mongo-sanitize/-/express-mongo-sanitize-2.0.1.tgz#18c9de723b747834f86e6077d164ef16f8d5c5b6"
   integrity sha512-aeI5s31m5HlR9SedUlhXVuWwm3alVxcyVr2cUq6jFr/0FcCr5Vz5qItEcrtVz5YUdS5HvOAUG8hF6eRGgbQQ9w==
+
+express-rate-limit@^5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-5.2.3.tgz#ae73b3dc723decd697797611bd96e9b34a912f6c"
+  integrity sha512-cjQH+oDrEPXxc569XvxhHC6QXqJiuBT6BhZ70X3bdAImcnHnTNMVuMAJaT0TXPoRiEErUrVPRcOTpZpM36VbOQ==
 
 express@^4.17.1:
   version "4.17.1"

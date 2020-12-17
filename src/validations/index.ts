@@ -1,3 +1,2 @@
-import logger from '../config/logger';
-
-logger.info('middleware');
+import './auth.validation';
+import './user.validation';
