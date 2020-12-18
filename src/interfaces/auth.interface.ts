@@ -8,3 +8,10 @@ export interface IGenerateAuthTokens {
     expires: Date;
   };
 }
+
+export interface IJwtPayload{
+    sub: string;
+    iat: number;
+    exp: number,
+    type: string;
+}

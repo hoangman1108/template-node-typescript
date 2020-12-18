@@ -1,55 +1,42 @@
-import { Request, Response } from 'express';
-import httpStatus from 'http-status';
-import { IGenerateAuthTokens } from '../interfaces/auth.interface';
-import AuthService from '../services/auth.service';
-import TokenService from '../services/token.service';
-import UserService from '../services/user.service';
-import { catchAsync } from '../utils/catchAsync';
+import { Request, Response } from "express";
+import httpStatus from "http-status";
+import UserService from "../services/user.service";
+import ApiError from "../utils/ApiError";
+import { catchAsync } from "../utils/catchAsync";
+import { pick } from "../utils/pick";
 
 export default class UserController {
-  private userService: UserService;
+    private userService: UserService;
+    constructor(){
+        this.userService = new UserService();
+    }
+    createUser = catchAsync(async(req: Request, res: Response) => {
+        const user = await this.userService.createUser(req.body);
+        res.status(httpStatus.CREATED).send(user);
+    });
 
-  private tokenService: TokenService;
+    getUsers = catchAsync(async(req: Request, res: Response) => {
+        const filter = pick(req.query, ['name', 'role']);
+        const options = pick(req.query, ['sortBy', 'limit', 'page']);
+        const result = await this.userService.queryUsers(filter, options);
+        res.send(result);
+    });
 
-  private authService: AuthService;
+    getUser = catchAsync(async(req: Request, res: Response) => {
+        const user = await this.userService.getUserById(req.params.userId);
+        if (!user) {
+            throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+        }
+        res.send(user);
+    });
 
-  constructor() {
-    this.userService = new UserService();
-    this.tokenService = new TokenService();
-    this.authService = new AuthService();
-  }
+    updateUser = catchAsync(async(req:Request, res: Response) => {
+        const user = await this.userService.updateUserById(req.params.userId, req.body);
+        res.send(user);
+    });
 
-  register = catchAsync(async (req: Request, res: Response) => {
-    const user = await this.userService.createUser(req.body);
-    const tokens = await this.tokenService.generateAuthTokens({ id: user.id || '' });
-    res.status(httpStatus.CREATED).send({ user, tokens });
-  });
-
-  login = catchAsync(async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const user = await this.authService.loginUserWithEmailAndPassword(email, password);
-    const tokens: IGenerateAuthTokens = await this.tokenService.generateAuthTokens({ id: user.id || '' });
-    res.send({ user, tokens });
-  });
-
-  logout = catchAsync(async (req: Request, res: Response) => {
-    await this.authService.logout(req.body.refreshToken);
-    res.status(httpStatus.NO_CONTENT).send();
-  });
-
-  refreshTokens = catchAsync(async (req: Request, res: Response) => {
-    const tokens = await this.authService.refreshAuth(req.body.refreshToken);
-    res.send({ ...tokens });
-  });
-
-  forgotPassword = catchAsync(async (req: Request, res: Response) => {
-    // const resetPasswordToken = await this.tokenService.generateResetPasswordToken(req.body.email);
-    // await this.emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-    res.status(httpStatus.NO_CONTENT).send();
-  });
-
-  resetPassword = catchAsync(async (req: Request, res: Response) => {
-    await this.authService.resetPassword(req.query.token?.toString() || '', req.body.password);
-    res.status(httpStatus.NO_CONTENT).send();
-  });
+    deleteUser = catchAsync(async(req:Request, res: Response) => {
+        await this.userService.deleteUserById(req.params.userId);
+        res.status(httpStatus.NO_CONTENT).send();
+    });
 }

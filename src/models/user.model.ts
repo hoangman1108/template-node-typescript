@@ -45,7 +45,6 @@ const userSchema = new Schema({
   },
   salt: {
     type: String,
-    required: true,
     trim: true,
     minlength: 8,
     private: true,
@@ -54,9 +53,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  role: {
+  roles: {
     type: String,
-    enum: roles.roles,
+    enum: ['user', 'admin'],
     default: 'user',
   },
 },
