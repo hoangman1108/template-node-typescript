@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { IGenerateAuthTokens } from '../interfaces/auth.interface';
 import AuthService from '../services/auth.service';
+import EmailService from '../services/email.service';
 import TokenService from '../services/token.service';
 import UserService from '../services/user.service';
 import { catchAsync } from '../utils/catchAsync';
@@ -13,10 +14,13 @@ export default class AuthController {
 
   private authService: AuthService;
 
+  private emailService: EmailService;
+  
   constructor() {
     this.userService = new UserService();
     this.tokenService = new TokenService();
     this.authService = new AuthService();
+    this.emailService = new EmailService();
   }
 
   register = catchAsync(async (req: Request, res: Response) => {
@@ -43,8 +47,8 @@ export default class AuthController {
   });
 
   forgotPassword = catchAsync(async (req: Request, res: Response) => {
-    // const resetPasswordToken = await this.tokenService.generateResetPasswordToken(req.body.email);
-    // await this.emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
+    const resetPasswordToken = await this.tokenService.generateResetPasswordToken(req.body.email);
+    await this.emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
     res.status(httpStatus.NO_CONTENT).send();
   });
 
