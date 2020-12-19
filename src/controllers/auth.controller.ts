@@ -53,6 +53,7 @@ export default class AuthController {
   });
 
   resetPassword = catchAsync(async (req: Request, res: Response) => {
+    console.log(req.query.token, 'req.query.token');
     await this.authService.resetPassword(req.query.token?.toString() || '', req.body.password);
     res.status(httpStatus.NO_CONTENT).send();
   });
