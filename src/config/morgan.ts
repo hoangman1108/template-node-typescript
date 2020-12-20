@@ -18,7 +18,7 @@ const errorHandler = morgan(errorResponseFormat, {
   stream: { write: (message) => logger.error(message.trim()) },
 });
 
-module.exports = {
+export default {
   successHandler,
   errorHandler,
 };

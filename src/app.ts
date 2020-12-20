@@ -11,8 +11,16 @@ import router from './routers/index';
 import ApiError from './utils/ApiError';
 import { errorConverter, errorHandler } from './middlewares/error';
 import { jwtStrategy } from './config/passport';
+import morgan from './config/morgan';
+import config from './config/config';
 
 const app = express();
+
+if (config.env !== 'test') {
+  app.use(morgan.successHandler);
+  app.use(morgan.errorHandler);
+}
+
 // set security HTTP headers
 app.use(helmet());
 

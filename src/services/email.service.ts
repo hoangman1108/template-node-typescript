@@ -45,6 +45,7 @@ export default class EmailService {
     } catch (error) {
       logger.info('MailerService#send.error %o', error);
     }
+    // this.transporter.close();
   };
 
   sendResetPasswordEmail = async (to: string, token: string) => {
