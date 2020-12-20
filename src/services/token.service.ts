@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import httpStatus from 'http-status';
+import { Schema } from 'mongoose';
 import config from '../config/config';
 import { IToken, TokenCollection } from '../models/token.model';
 import { tokenTypes } from '../config/tokens';
@@ -8,7 +9,6 @@ import ApiError from '../utils/ApiError';
 import UserService from './user.service';
 import { IUserDocument } from '../models/user.model';
 import { IGenerateAuthTokens, IJwtPayload } from '../interfaces/auth.interface';
-import { Schema } from 'mongoose';
 
 export default class TokenService {
   private userService: UserService;

@@ -8,8 +8,6 @@ import {
 } from 'mongoose';
 import { toJSON } from './plugins/toJSON.plugin';
 
-import roles from '../config/roles';
-
 export interface IUserDocument extends Document {
   name: string;
   email: string;

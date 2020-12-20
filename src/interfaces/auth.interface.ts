@@ -10,8 +10,8 @@ export interface IGenerateAuthTokens {
 }
 
 export interface IJwtPayload{
-    sub: string;
-    iat: number;
-    exp: number,
-    type: string;
+  sub: string;
+  iat: number;
+  exp: number;
+  type: string;
 }

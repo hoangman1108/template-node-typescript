@@ -19,7 +19,7 @@ export default class EmailService {
       },
       send: true,
       transport: this.transporter,
-    })
+    });
     if (config.env !== 'test') {
       this.transporter
         .verify()
@@ -35,7 +35,7 @@ export default class EmailService {
       await this.emailTemplates.send({
         template: path.join(__dirname, '../', 'templates', '/reset-password'),
         message: {
-          to: to,
+          to,
         },
         locals: {
           data,
@@ -45,20 +45,14 @@ export default class EmailService {
     } catch (error) {
       logger.info('MailerService#send.error %o', error);
     }
-    // this.transporter.close();
   };
 
   sendResetPasswordEmail = async (to: string, token: string) => {
-    const subject = 'Reset password';
-    // replace this url with the link to the reset password page of your front-end app
     const resetPasswordUrl = `http://localhost:3000/auth/reset-password?token=${token}`;
-    const text = `Dear user,
-    To reset your password, click on this link: ${resetPasswordUrl}
-    If you did not request any password resets, then ignore this email.`;
     const data = {
       name: 'nguyen hoang man',
-      link: resetPasswordUrl
-    }
+      link: resetPasswordUrl,
+    };
     await this.sendEmail(to, data);
   };
 }
