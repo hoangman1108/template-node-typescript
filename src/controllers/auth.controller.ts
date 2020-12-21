@@ -23,9 +23,10 @@ export default class AuthController {
     this.emailService = new EmailService();
   }
 
-  register = catchAsync(async (req: Request, res: Response) => {
+  register = catchAsync(async (req: Request & {session: any}, res: Response) => {
     const user = await this.userService.createUser(req.body);
     const tokens = await this.tokenService.generateAuthTokens({ id: user.id || '' });
+    req.session.userId = user.id;
     res.status(httpStatus.CREATED).send({ user, tokens });
   });
 

@@ -18,6 +18,9 @@ const envVarsSchema = Joi.object()
     SMTP_USER: Joi.string().description('username for email server'),
     SMTP_PASS: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+    REDIS_HOST: Joi.string().description('host redis'),
+    REDIS_PORT: Joi.string().description('port redis'),
+    SECRET_SESSION: Joi.string().description('secret session for session policy'),
   })
   .unknown();
 
@@ -54,5 +57,12 @@ export default {
       },
     },
     from: envVars.EMAIL_FROM,
+  },
+  redis: {
+    host: envVars.REDIS_HOST,
+    port: envVars.REDIS_PORT,
+  },
+  session: {
+    secretKey: envVars.SESSION_SECRET,
   },
 };
