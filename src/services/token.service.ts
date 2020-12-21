@@ -1,13 +1,14 @@
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import httpStatus from 'http-status';
+import { Schema } from 'mongoose';
 import config from '../config/config';
 import { IToken, TokenCollection } from '../models/token.model';
 import { tokenTypes } from '../config/tokens';
 import ApiError from '../utils/ApiError';
 import UserService from './user.service';
 import { IUserDocument } from '../models/user.model';
-import { IGenerateAuthTokens } from '../interfaces/auth.interface';
+import { IGenerateAuthTokens, IJwtPayload } from '../interfaces/auth.interface';
 
 export default class TokenService {
   private userService: UserService;
@@ -38,10 +39,9 @@ export default class TokenService {
   };
 
   verifyToken = async (token: string, type: any): Promise<IToken> => {
-    const payload: any = jwt.verify(token, config.jwt.secret);
-    console.log('payload', payload);
+    const payload: any | IJwtPayload = jwt.verify(token, config.jwt.secret);
     const tokenDoc: IToken | null = await TokenCollection.findOne({
-      token, type, user: payload.sub, blacklisted: false,
+      token, type, user: <Schema.Types.ObjectId>payload.sub, blacklisted: false,
     });
     if (!tokenDoc) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Token not found');

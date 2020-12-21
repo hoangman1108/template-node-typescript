@@ -3,6 +3,7 @@ import app from './app';
 import config from './config/config';
 import logger from './config/logger';
 
+// eslint-disable-next-line no-new
 new database();
 
 const server = app.listen(config.port, () => {

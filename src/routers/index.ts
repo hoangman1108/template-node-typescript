@@ -1,11 +1,22 @@
-import express, { Request, Response } from 'express';
-import userRoute from './user.routes';
+import express from 'express';
+import authRouter from './auth.routes';
+import userRouter from './user.routes';
 
-const router: express.Router = express.Router();
+class Router {
+  private router: express.Router;
 
-router.get('/', (req: Request, res: Response) => {
-  res.send('this is home');
-});
-router.use('/auth', userRoute);
+  constructor() {
+    this.router = express.Router();
+  }
 
-export default router;
+  Start() {
+    this.router.use('/auth', authRouter);
+    this.router.use('/users', userRouter);
+  }
+
+  getRouter() {
+    return this.router;
+  }
+}
+
+export default new Router();
