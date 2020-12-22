@@ -72,7 +72,6 @@ app.use(
     },
     saveUninitialized: false,
     secret: config.session.secretKey,
-    resave: false,
   })
 );
 

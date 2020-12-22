@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import httpStatus from 'http-status';
+import logger from '../config/logger';
 import { IGenerateAuthTokens } from '../interfaces/auth.interface';
 import AuthService from '../services/auth.service';
 import EmailService from '../services/email.service';
@@ -28,7 +29,7 @@ export default class AuthController {
     const user = await this.userService.createUser(req.body);
     const tokens = await this.tokenService.generateAuthTokens({ id: user.id || '' });
     if (user.id) {
-      req.session.id = user.id;
+      req.session.userId = user.id;
     }
     res.status(httpStatus.CREATED).send({ user, tokens });
   });
@@ -39,12 +40,16 @@ export default class AuthController {
     if (user.id) {
       req.session.userId = user.id;
     }
+
     const tokens: IGenerateAuthTokens = await this.tokenService.generateAuthTokens({ id: user.id || '' });
     res.send({ user, tokens });
   });
 
   logout = catchAsync(async (req: CoolRequest, res: Response) => {
     await this.authService.logout(req.body.refreshToken);
+    req.session.destroy((err: Error) => {
+      logger.info(err.message);
+    });
     res.status(httpStatus.NO_CONTENT).send();
   });
 
