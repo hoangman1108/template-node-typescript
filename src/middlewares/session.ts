@@ -5,12 +5,11 @@ import config from '../config/config';
 
 const RedisStore = connectRedis(session);
 const redisClient = redis.createClient();
-
 export default session({
   name: 'session_name',
   secret: config.session.secretKey || 'secret_session',
   store: new RedisStore({
-    host: config.redis.host,
+    host: '172.17.0.2',
     port: config.redis.port,
     client: redisClient,
     disableTouch: true,

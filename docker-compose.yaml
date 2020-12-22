@@ -9,22 +9,34 @@ services:
         MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
         MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
-        - "27017:27017"
+        - 27017:27017
     volumes: 
         - ./mongo/data/:/var/lib/mongo
 
   cache:
-    container_name: redis
+    container_name: cache
     image: "redis:5.0.8-alpine"
     restart: "on-failure"
-    expose:
-      - "6379"
     ports: 
-      - "6379:6379"
+      - 6379:6379
     volumes:
       - ./redis/data:/var/lib/redis
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'redis-cli PING'"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+  
+  templates:
+    image: templates:dev
+    container_name: templates
+    build: 
+      context: "./"
+    depends_on:
+      - cache
+      - mongodb
+    links:
+      - cache
+      - mongodb
+    ports:
+      - 3001:3001
+    restart: "on-failure" 
+networks:
+  template_networks:
+    external:
+      name: template_networks
