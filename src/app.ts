@@ -1,6 +1,5 @@
 import express from 'express';
 import helmet from 'helmet';
-// import xss from 'xss-clean';
 import mongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression';
 import cors from 'cors';
@@ -58,7 +57,7 @@ const redisClient = redis.createClient();
 // connect-redis
 app.use(
   session({
-    name: '__test__',
+    name: 'session_name',
     store: new RedisStore({
       host: config.redis.host,
       port: config.redis.port,
@@ -69,7 +68,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24, // a day
       httpOnly: true,
       secure: false, // true to work only in https
-      sameSite: 'lax', // csrf
+      sameSite: 'lax', // CSFR
     },
     saveUninitialized: false,
     secret: config.session.secretKey,
