@@ -7,6 +7,7 @@ import ApiError from '../utils/ApiError';
 import roles from '../config/roles';
 import { IUserDocument } from '../models/user.model';
 
+// callback from passport jwtVerify
 const verifyCallback = (
   req: Request,
   resolve: any,
@@ -17,7 +18,6 @@ const verifyCallback = (
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
   req.user = user;
-
   if (requiredRights.length) {
     const userRights = roles.roleRights.get(user.roles);
     const hasRequiredRights = requiredRights.every((requiredRight: any[]) => userRights.includes(requiredRight));

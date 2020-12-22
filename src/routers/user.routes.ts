@@ -14,7 +14,7 @@ router
 
 // router.route('/abc/def')
 //   .get((req: any, res) => {
-//     console.log(req.session.userId);
+//     console.log(req.session);
 //     res.send('asdasdasd');
 //   });
 

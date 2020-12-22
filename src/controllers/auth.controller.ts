@@ -37,11 +37,8 @@ export default class AuthController {
   login = catchAsync(async (req: CoolRequest, res: Response) => {
     const { email, password } = req.body;
     const user = await this.authService.loginUserWithEmailAndPassword(email, password);
-    if (user.id) {
-      req.session.userId = user.id;
-    }
-
     const tokens: IGenerateAuthTokens = await this.tokenService.generateAuthTokens({ id: user.id || '' });
+    req.session.tokens = tokens;
     res.send({ user, tokens });
   });
 

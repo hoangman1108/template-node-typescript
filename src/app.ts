@@ -5,17 +5,15 @@ import compression from 'compression';
 import cors from 'cors';
 import passport from 'passport';
 import httpStatus from 'http-status';
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import redis from 'redis';
 import cookieParser from 'cookie-parser';
 
+import session from './middlewares/session';
+import { errorConverter, errorHandler } from './middlewares/error';
 import router from './routers/index';
 import ApiError from './utils/ApiError';
-import { errorConverter, errorHandler } from './middlewares/error';
+import config from './config/config';
 import { jwtStrategy } from './config/passport';
 import morgan from './config/morgan';
-import config from './config/config';
 
 const app = express();
 
@@ -51,29 +49,8 @@ app.use(compression());
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
-const RedisStore = connectRedis(session);
-const redisClient = redis.createClient();
-
 // connect-redis
-app.use(
-  session({
-    name: 'session_name',
-    store: new RedisStore({
-      host: config.redis.host,
-      port: config.redis.port,
-      client: redisClient,
-      disableTouch: true,
-    }),
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // a day
-      httpOnly: true,
-      secure: false, // true to work only in https
-      sameSite: 'lax', // CSFR
-    },
-    saveUninitialized: false,
-    secret: config.session.secretKey,
-  })
-);
+app.use(session);
 
 router.Start();
 app.use('/', router.getRouter());
