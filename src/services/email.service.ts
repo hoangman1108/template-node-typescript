@@ -2,6 +2,7 @@ import { createTransport } from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import EmailTemplates from 'email-templates';
 import path from 'path';
+import smtpTransport from 'nodemailer-smtp-transport';
 
 import config from '../config/config';
 import logger from '../config/logger';
@@ -13,7 +14,7 @@ export default class EmailService {
 
   constructor() {
     console.log(config.email.smtp);
-    this.transporter = createTransport(config.email.smtp);
+    this.transporter = createTransport(smtpTransport(config.email.smtp));
     this.emailTemplates = new EmailTemplates({
       message: {
         from: config.email.smtp.auth.user,
