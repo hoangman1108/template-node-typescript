@@ -7,7 +7,7 @@ import passport from 'passport';
 import httpStatus from 'http-status';
 import cookieParser from 'cookie-parser';
 
-import session from './middlewares/session';
+// import session from './middlewares/session';
 import { errorConverter, errorHandler } from './middlewares/error';
 import router from './routers/index';
 import ApiError from './utils/ApiError';
@@ -50,7 +50,7 @@ app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
 // connect-redis
-app.use(session);
+// app.use(session);
 
 router.Start();
 app.use('/', router.getRouter());
