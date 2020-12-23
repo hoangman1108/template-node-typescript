@@ -12,6 +12,7 @@ export default class EmailService {
   private emailTemplates: EmailTemplates;
 
   constructor() {
+    console.log(config.email.smtp);
     this.transporter = createTransport(config.email.smtp);
     this.emailTemplates = new EmailTemplates({
       message: {
@@ -33,7 +34,7 @@ export default class EmailService {
     // await this.transporter.sendMail(msg);
     try {
       await this.emailTemplates.send({
-        template: path.join(__dirname, '../', 'templates', '/reset-password'),
+        template: path.join(__dirname, '../../', 'templates', '/reset-password'),
         message: {
           to,
         },
