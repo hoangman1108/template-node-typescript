@@ -9,7 +9,7 @@ export default session({
   name: 'session_name',
   secret: config.session.secretKey || 'secret_session',
   store: new RedisStore({
-    host: '172.17.0.2',
+    host: config.redis.host,
     port: config.redis.port,
     client: redisClient,
     disableTouch: true,

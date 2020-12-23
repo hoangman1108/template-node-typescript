@@ -1,6 +1,5 @@
 version: "3"
 services:
-  # Mongo Service
   mongodb:
     container_name: mongodb
     image: mongo:latest
@@ -10,17 +9,21 @@ services:
         MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
         - 27017:27017
+    networks:
+      - cool-networks
     volumes: 
         - ./mongo/data/:/var/lib/mongo
-
+  #Cache Service  
   cache:
-    container_name: cache
     image: "redis:5.0.8-alpine"
-    restart: "on-failure"
+    container_name: cache
+    networks:
+      - cool-networks
+    expose:
+      - "6379"
     ports: 
-      - 6379:6379
-    volumes:
-      - ./redis/data:/var/lib/redis
+      - "6379:6379"
+    restart: "on-failure"
   
   templates:
     image: templates:dev
@@ -30,13 +33,10 @@ services:
     depends_on:
       - cache
       - mongodb
-    links:
-      - cache
-      - mongodb
+    networks:
+      - cool-networks
     ports:
       - 3001:3001
     restart: "on-failure" 
 networks:
-  template_networks:
-    external:
-      name: template_networks
+  cool-networks:
