@@ -12,7 +12,6 @@ export default class EmailService {
   private emailTemplates: EmailTemplates;
 
   constructor() {
-    console.log(config.email.smtp);
     this.transporter = createTransport(config.email.smtp);
     this.emailTemplates = new EmailTemplates({
       message: {
@@ -25,7 +24,7 @@ export default class EmailService {
       this.transporter
         .verify()
         .then(() => logger.info('Connected to email server'))
-        .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
+        .catch((error) => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env', error));
     }
   }
 
