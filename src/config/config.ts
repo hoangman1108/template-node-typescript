@@ -50,6 +50,7 @@ export default {
   email: {
     smtp: {
       pool: true,
+      host: 'smtp.gmail.com',
       service: envVars.SMTP_SERVICE || 'Gmail',
       auth: {
         user: envVars.SMTP_USER,
