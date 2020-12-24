@@ -15,10 +15,10 @@ services:
         - ./mongo/data/:/var/lib/mongo
   #Cache Service  
   cache:
-    image: "redis:5.0.8-alpine"
-    container_name: cache
+    image: redis
     networks:
       - cool-networks
+    command: ["redis-server", "--bind", "cache", "--port", "6379"]
     expose:
       - "6379"
     ports: 
