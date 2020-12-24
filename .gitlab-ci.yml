@@ -38,4 +38,4 @@ deploy:
   script:
     - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker pull registry.gitlab.com/hoangman1108/templates-cicd"
     - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker stop test-cicd || true && docker rm test-cicd || true"
-    - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker run -p 88:80 -d --name test-cicd registry.gitlab.com/hoangman1108/templates-cicd"
+    - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker run -p 80:80 -d --name test-cicd registry.gitlab.com/hoangman1108/templates-cicd"
