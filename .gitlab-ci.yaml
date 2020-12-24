@@ -1,0 +1,51 @@
+stages:
+  - build
+  - test
+  - docker-build
+  - deploy
+
+build:
+  stage: build
+  image: node
+  script:
+    - echo "Start building App"
+    - npm install --force
+    - npm build
+    - echo "Build successfully!"
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - build
+      - node_modules/
+
+test:
+  stage: test
+  image: node
+  script:
+    - echo "Testing App"
+    - npm install --force
+    - npm test
+    - echo "Test successfully!"
+
+docker-build:
+  stage: docker-build
+  image: docker:latest
+  services:
+    - name: docker:19.03.8-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+
+deploy:
+  stage: deploy
+  image: kroniak/ssh-client
+  before_script:
+    - echo "deploying app"
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > key.pem
+    - chmod 400 key.pem
+  script:
+    - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker pull registry.gitlab.com/hoangman1108/templates-cicd"
+    - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker stop test-cicd || true && docker rm test-cicd || true"
+    - ssh -o StrictHostKeyChecking=no -i key.pem $USER_NAME@$PROD_SERVER_IP "docker run -p 80:80 -d --name test-cicd registry.gitlab.com/hoangman1108/templates-cicd"
