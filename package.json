@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "yarn build && node build/index.js",
-        "build": "react-scripts build",
+        "build": "babel --out-file bundle.js main.ts",
         "dev": "nodemon",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix"
