@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "yarn build && node build/index.js",
-        "build": "tsc",
+        "build": "react-scripts build",
         "dev": "nodemon",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix"
