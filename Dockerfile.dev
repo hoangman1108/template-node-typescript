@@ -12,7 +12,9 @@ RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum
 RUN dnf install -y yarn
 
 RUN yarn install
+
+RUN yarn build
 ADD . .
 
 EXPOSE 3001
-CMD [ "yarn", "dev" ]
+CMD [ "yarn", "start" ]

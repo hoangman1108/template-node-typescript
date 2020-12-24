@@ -1,22 +1,26 @@
-FROM node:12-alpine as build
+FROM centos:8
 
-# Specify where our app will live in the container
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/template-svc
 
-# Copy the React App to the contain`er
-COPY . /app/
+ADD . ./pakage.json
+RUN dnf install -y gcc-c++ make
+RUN curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+RUN dnf install -y nodejs
 
-# Prepare the container for building React
-RUN npm install
-# We want the production version
-RUN npm run build
+RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+RUN dnf install -y yarn
+
+RUN yarn install
+
+RUN yarn build
+ADD . .
+
+EXPOSE 8001
+CMD [ "yarn", "start" ]
 
 # Prepare nginx
-FROM nginx:1.16.0-alpine
+# FROM nginx:1.16.0-alpine
 # COPY --from=build /app/build /usr/share/nginx/html
 # RUN rm /etc/nginx/conf.d/default.conf
 # COPY nginx.conf /etc/nginx/conf.d
-
-# Fire up nginx
-EXPOSE 80
-CMD [ "npm", "run", "start" ]
