@@ -19,4 +19,4 @@ FROM nginx:1.16.0-alpine
 
 # Fire up nginx
 EXPOSE 80
-CMD [ "yarn", "start" ]
+CMD [ "npm", "run", "start" ]
