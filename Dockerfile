@@ -3,7 +3,7 @@ FROM node:12-alpine as build
 # Specify where our app will live in the container
 WORKDIR /app
 
-# Copy the React App to the container
+# Copy the React App to the contain`er
 COPY . /app/
 
 # Prepare the container for building React
