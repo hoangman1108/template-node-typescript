@@ -1,6 +1,5 @@
 stages:
   - build
-  - test
   - docker-build
   - deploy
 
@@ -17,15 +16,6 @@ build:
     paths:
       - build
       - node_modules/
-
-test:
-  stage: test
-  image: node
-  script:
-    - echo "Testing App"
-    - npm install --force
-    - npm test
-    - echo "Test successfully!"
 
 docker-build:
   stage: docker-build
