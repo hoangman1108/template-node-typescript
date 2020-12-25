@@ -1,10 +1,10 @@
 import httpStatus from 'http-status';
-// import { PaginateOptions } from '../interfaces/mongose.interface';
 import { ILibraryDocument, LibCollection } from '../models/library.model';
 import ApiError from '../utils/ApiError';
+import { PaginateOptions } from '../interfaces/mongose.interface';
 
 export default class LibraryService {
-  async create(data: ILibraryDocument) {
+  async create(data: ILibraryDocument): Promise<ILibraryDocument> {
     if (await LibCollection.isNameTaken(data.name)) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Name is already taken');
     }
@@ -15,7 +15,14 @@ export default class LibraryService {
     });
   }
 
-  list(filter: any, options: any) {
+  list(filter: any, options: PaginateOptions): Promise<ILibraryDocument[]> {
     return LibCollection.paginate(filter, options);
+  }
+
+  delete(id: string): Promise<string> {
+    return LibCollection.findByIdAndDelete(id).then((result) => {
+      if (result) return 'Delete Success';
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Library cannot deleted');
+    });
   }
 }

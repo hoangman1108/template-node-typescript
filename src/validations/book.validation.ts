@@ -1,31 +1,37 @@
 import Joi from 'joi';
 
-const createLib = {
+const createBook = {
   body: Joi.object().keys({
+    libId: Joi.string().required(),
+    author: Joi.string().required(),
+    status: Joi.string().valid('DONE', 'READING'),
     name: Joi.string().required(),
-    amount: Joi.number().required(),
   }),
 };
 
-const getLibs = {
+const getBooks = {
   body: Joi.object().keys({
     name: Joi.string(),
-    amount: Joi.number(),
+    libId: Joi.string(),
     sortBy: Joi.string(),
+    author: Joi.string(),
+    status: Joi.string().valid('DONE', 'READING'),
+
+    populate: Joi.string(),
     typeSort: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
   }),
 };
 
-const deleteLib = {
+const deleteBook = {
   params: Joi.object().keys({
     id: Joi.string(),
   }),
 };
 
 export default {
-  createLib,
-  getLibs,
-  deleteLib,
+  createBook,
+  getBooks,
+  deleteBook,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import {
   Document, model, Model, Schema,
 } from 'mongoose';
@@ -12,6 +13,7 @@ export interface ILibraryDocument extends Document {
 interface ILibraryModel extends Model<ILibraryDocument> {
   paginate: any;
   isNameTaken: (name: string) => Promise<boolean>;
+  idNotExists: (id: string) => Promise<boolean>;
 }
 
 const libSchema = new Schema({
@@ -29,11 +31,14 @@ const libSchema = new Schema({
 libSchema.plugin(toJSON);
 libSchema.plugin(mongoosePaginate);
 
-// check email exists
-// eslint-disable-next-line func-names
 libSchema.statics.isNameTaken = async function (name: string): Promise<boolean> {
   const user = await this.findOne({ name });
   return !!user;
+};
+
+libSchema.statics.idNotExists = async function (id: string): Promise<boolean> {
+  const lib = await this.findById(id);
+  return !lib;
 };
 
 export const LibCollection = model<ILibraryDocument, ILibraryModel>('library', libSchema);

@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { PaginateOptions } from '../interfaces/mongose.interface';
+import { ILibraryDocument } from '../models/library.model';
 import LibraryService from '../services/library.service';
 import { catchAsync } from '../utils/catchAsync';
 import { pick } from '../utils/pick';
@@ -12,13 +14,13 @@ export default class LibraryController {
   }
 
   createLib = catchAsync(async (req: Request, res: Response) => {
-    const user = await this.libService.create(req.body);
-    res.status(httpStatus.CREATED).send(user);
+    const library:ILibraryDocument = await this.libService.create(req.body);
+    res.status(httpStatus.CREATED).send(library);
   });
 
   listLib = catchAsync(async (req: Request, res: Response) => {
     const filter = pick(req.body, ['name', 'amount']);
-    const options = pick(req.body, ['sortBy', 'typeSort', 'limit', 'page']);
+    const options: PaginateOptions = pick(req.body, ['sortBy', 'typeSort', 'limit', 'page']);
     if (options.sortBy) {
       if (options.sortBy === 'name') {
         options.sort = {
@@ -35,7 +37,12 @@ export default class LibraryController {
       delete options.sortBy;
       delete options.typeSort;
     }
-    const result = await this.libService.list(filter, options);
+    const result: ILibraryDocument[] = await this.libService.list(filter, options);
     res.status(httpStatus.OK).send(result);
+  });
+
+  deleteLib = catchAsync(async (req: Request, res: Response) => {
+    const result:string = await this.libService.delete(req.params.id);
+    res.send(result);
   });
 }

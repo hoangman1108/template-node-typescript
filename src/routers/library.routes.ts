@@ -10,4 +10,7 @@ router.route('/')
   .get(validate(libValidation.getLibs), libController.listLib)
   .post(validate(libValidation.createLib), libController.createLib);
 
+router.route('/:id')
+  .delete(validate(libValidation.deleteLib), libController.deleteLib);
+
 export default router;
