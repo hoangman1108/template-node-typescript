@@ -1,6 +1,7 @@
 import express from 'express';
 import authRouter from './auth.routes';
 import userRouter from './user.routes';
+import libRouter from './library.routes';
 
 class Router {
   private router: express.Router;
@@ -12,6 +13,7 @@ class Router {
   Start() {
     this.router.use('/auth', authRouter);
     this.router.use('/users', userRouter);
+    this.router.use('/lib', libRouter);
   }
 
   getRouter() {
