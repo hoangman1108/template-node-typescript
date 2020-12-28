@@ -33,6 +33,5 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
   if (config.env === 'development') {
     logger.error(err);
   }
-
   res.status(statusCode).send(response);
 };

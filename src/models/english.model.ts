@@ -20,7 +20,7 @@ const englishSchema = new Schema({
   },
 });
 
-englishSchema.index({ request: 'text' });
+// englishSchema.index({ request: 'text' });
 englishSchema.plugin(mongoosePaginate);
 
 export const EnglishCollection = model<IEnglishDocument>('english', englishSchema);

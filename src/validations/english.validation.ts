@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 const createEnglish = {
   body: Joi.object().keys({
-    request: Joi.string().required(),
+    request: Joi.array().required(),
     response: Joi.string().required(),
   }),
 };

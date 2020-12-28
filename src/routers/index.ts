@@ -3,6 +3,7 @@ import authRouter from './auth.routes';
 import userRouter from './user.routes';
 import libRouter from './library.routes';
 import bookRouter from './book.routes';
+import englishRouter from './english.routes';
 
 class Router {
   private router: express.Router;
@@ -16,7 +17,7 @@ class Router {
     this.router.use('/users', userRouter);
     this.router.use('/lib', libRouter);
     this.router.use('/book', bookRouter);
-    // /lib/:lib/book
+    this.router.use('/english', englishRouter);
   }
 
   getRouter() {

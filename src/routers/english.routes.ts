@@ -11,3 +11,5 @@ router.route('/')
   .get(validate(englishValidator.getEnglishes), englishController.listEnglish);
 
 router.route('/search').post(validate(englishValidator.findEnglish), englishController.findEnglish);
+
+export default router;
