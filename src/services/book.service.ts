@@ -1,4 +1,6 @@
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
+
 import { PaginateOptions } from '../interfaces/mongose.interface';
 import { BookCollection, IBookDocument } from '../models/book.model';
 import { LibCollection } from '../models/library.model';
@@ -6,7 +8,6 @@ import ApiError from '../utils/ApiError';
 
 export default class BookService {
   async create(data: IBookDocument): Promise<IBookDocument> {
-    console.log(await LibCollection.idNotExists(data.libId));
     if (await LibCollection.idNotExists(data.libId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'libId is not exist');
     }
@@ -20,7 +21,29 @@ export default class BookService {
     });
   }
 
-  list(filter: any, query: PaginateOptions) {
+  async list(filter: any, query: PaginateOptions) {
+    await LibCollection.aggregate([
+      { $match: { _id: null } },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: '$amount',
+          },
+          average_transaction_amount: {
+            $avg: '$amount',
+          },
+          min_transaction_amount: {
+            $min: '$amount',
+          },
+          max_transaction_amount: {
+            $max: '$amount',
+          },
+        },
+      },
+    ]).then((value: any) => {
+      console.log(value);
+    });
     return BookCollection.paginate(filter, query);
   }
 }
