@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import { PaginateOptions } from '../interfaces/mongose.interface';
 import { IBookDocument } from '../models/book.model';
 import BookService from '../services/book.service';
-import { catchAsync } from '../utils/catchAsync';
+import { catchAsync } from 'catch-async-express';
 import { pick } from '../utils/pick';
 
 export default class BookController {

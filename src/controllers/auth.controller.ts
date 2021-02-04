@@ -6,7 +6,7 @@ import AuthService from '../services/auth.service';
 import EmailService from '../services/email.service';
 import TokenService from '../services/token.service';
 import UserService from '../services/user.service';
-import { catchAsync } from '../utils/catchAsync';
+import { catchAsync } from 'catch-async-express';
 // import { CoolRequest } from '../utils/Context';
 
 export default class AuthController {

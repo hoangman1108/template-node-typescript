@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { PaginateOptions } from '../interfaces/mongose.interface';
 import EnglishService from '../services/english.service';
-import { catchAsync } from '../utils/catchAsync';
+import { catchAsync } from 'catch-async-express';
 import { pick } from '../utils/pick';
 
 export default class EnglishController {

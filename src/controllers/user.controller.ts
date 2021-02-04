@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import UserService from '../services/user.service';
 import ApiError from '../utils/ApiError';
-import { catchAsync } from '../utils/catchAsync';
+import { catchAsync } from 'catch-async-express';
 import { pick } from '../utils/pick';
 
 export default class UserController {
