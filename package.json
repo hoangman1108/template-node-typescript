@@ -50,9 +50,7 @@
         "typescript": "^4.0.3",
         "validator": "^13.5.2",
         "winston": "^3.3.3",
-        "xss-clean": "^0.1.1"
-    },
-    "devDependencies": {
+        "xss-clean": "^0.1.1",
         "@types/bcryptjs": "^2.4.2",
         "@types/body-parser": "^1.19.0",
         "@types/compression": "^1.7.0",
@@ -81,5 +79,8 @@
         "eslint-config-airbnb-typescript": "^9.0.0",
         "eslint-plugin-import": "^2.22.0",
         "tslint": "^6.1.3"
+    },
+    "devDependencies": {
+   
     }
 }
