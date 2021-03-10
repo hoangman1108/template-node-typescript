@@ -53,7 +53,7 @@ passport.use('jwt', jwtStrategy);
 // app.use(session);
 
 router.Start();
-app.use('/', router.getRouter());
+app.use('/api', router.getRouter());
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
